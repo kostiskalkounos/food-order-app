@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Card from "../UI/Card";
-import styles from "./AvailableMeals.module.css";
+import classes from "./AvailableMeals.module.css";
 import MealItem from "./MealItem/MealItem";
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -28,7 +29,16 @@ const AvailableMeals = () => {
     };
 
     fetchMeals();
+    setIsLoading(false);
   }, []);
+
+  if (isLoading) {
+    return (
+      <section className={classes.mealsLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
 
   const mealsList = meals.map((meal) => (
     <MealItem
@@ -41,7 +51,7 @@ const AvailableMeals = () => {
   ));
 
   return (
-    <section className={styles.meals}>
+    <section className={classes.meals}>
       <Card>
         <ul>{mealsList}</ul>
       </Card>
